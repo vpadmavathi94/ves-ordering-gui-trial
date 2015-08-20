@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.js"></script>
+
+<script type="text/javascript">
+	$(document).ready( function() {
+		$("#show").click( function() {
+			$("tr:has(td)").remove();
+			$.ajax( {
+				url : 'show.json',
+				type : 'GET',
+				data : {
+					id : $('#studid').val()
+				},
+				success : function(data){
+					var row="<tr><td>"+data.id+"</td><td>"+data.name+"</td><td>"+data.address+"</td></tr>";
+					$("#allStudents").append(row);
+				},
+				error : function(e){
+					alert(e.message)
+				}
+			}
+					);
+		}
+				);
+		$("#showAll").click( function() {
+			$("#studid").val("");
+			$("tr:has(td)").remove();
+			$.ajax( {
+				url : 'show.json',
+				type : 'GET',
+				success : function(data){
+					$.each(data, function(idx,obj){
+						var row="<tr><td>"+data.id+"</td><td>"+data.name+"</td><td>"+data.address+"</td></tr>";
+						$("#allStudents").append(row);
+					}
+							);
+				},
+				error : function(e){
+					alert(e.message)
+				}
+			}
+					);
+		}
+				)
+	}
+			);
+	
+	
+</script>
+
+</head>
+<body>
+	<input type="text" id="studid">
+	<button id="show">ShowStudent</button>
+	<button id="showAll">ShowAllStudents</button>
+	
+	<div id="studentDetails"></div>
+	
+	<ul id="students"></ul>
+	
+	<table id="allStudents" border=2>
+		<tr>
+		<th>Id</th>
+		<th>Name</th>
+		<th>Address</th>
+		</tr>
+	</table>
+</body>
+</html>
